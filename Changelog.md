@@ -1,10 +1,50 @@
 # Change Log
 
+## v2.6.2 
+
+---
+Release Date: **24.01.2025**
+
+- Fixed a regression bug in the Cell function ConvertArray
+- Added test cases
+
+
+## v2.6.1 
+
+---
+Release Date: **19.01.2025**
+
+- Fixed a bug on writing default column styles (not persisted in some cases)
+- Adapted style reader: When a workbook is loaded, not defined color values of Border styles are now empty strings (were null), as if a new style is created 
+- Code maintenance
+
+Note: The color values of Border styles are handled identical on writing XLSX files, either if null or empty. The change of the reader behavior was to enforce the "What You Can Write Is What You Can Read" policy of the library (writing an empty string as color value should lead to an empty string on read).
+
+## v2.6.0 
+
+---
+Release Date: **12.01.2025**
+
+- Added InsertRow and InsertColumn functions. Functionality provided by Alexander Schlecht
+- Added FirstCewllByValue, FirstOrDefaultCell, CellsByValue functions. Functionality provided by Alexander Schlecht
+- Added ReplaceCellValue function. Functionality provided by Alexander Schlecht
+- Code maintenance
+
+## v2.5.2 
+
+---
+Release Date: **24.11.2024**
+
+- Fixed a bug of the column address (letter) resolution. Column letters above 'Z' were resolved incorrectly
+- Changed async handing of the workbook reader, to avoid deadlocks. Change provided by Jarren Long
+- Simplified project structure (unified .Net 4.x and Standard). Change provided by Jarren Long
+- Added tests for column address resolution
+
 ## v2.5.1
 
 ---
 Release Date: **26.10.2024**
-- Fixed a bug regarding the determination of the first data cell in an empty worksheet. Bug fix provided by Martin Stránský
+- Fixed a bug regarding the determination of the first data cell in an empty worksheet. Bug fix provided by Martin StrÃ¡nskÃ½
 
 ## v2.5.0
 
@@ -23,7 +63,7 @@ Release Date: **21.04.2024**
 - Added handling to load workbooks from files asynchronously. Concept provided by John Leyva
 - Fixed a bug when loading a workbook asynchronously from a stream. Bug fix provided by John Leyva
 - Fixed a bug when the column auto-filter is a single cell address. Bug fix provided by pokorny
-- Fixed a bug regarding style enumeration when reading a workbook. Bug fix provided by Martin Stránský
+- Fixed a bug regarding style enumeration when reading a workbook. Bug fix provided by Martin StrÃ¡nskÃ½
 - Added new  and adapted existing test cases 
 
 ## v2.3.3

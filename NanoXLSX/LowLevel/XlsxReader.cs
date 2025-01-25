@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -283,30 +283,31 @@ namespace NanoXLSX.LowLevel
         private async Task ReadInternal()
         {
             ZipArchive zf;
-            if (inputStream == null && !string.IsNullOrEmpty(filePath))
-            {
-                using (FileStream fs = new FileStream(filePath, FileMode.Open))
-                {
-                    await fs.CopyToAsync(memoryStream);
-                }
-            }
-            else if (inputStream != null)
-            {
-                using (inputStream)
-                {
-                    await inputStream.CopyToAsync(memoryStream);
-                }
-            }
-            else
-            {
-                throw new IOException("No valid stream or file path was provided to open");
-            }
-
-            memoryStream.Position = 0;
-            zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
 
             await Task.Run(() =>
             {
+                if (inputStream == null && !string.IsNullOrEmpty(filePath))
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                    {
+                        fs.CopyTo(memoryStream);
+                    }
+                }
+                else if (inputStream != null)
+                {
+                    using (inputStream)
+                    {
+                      inputStream.CopyTo(memoryStream);
+                    }
+                }
+                else
+                {
+                    throw new IOException("No valid stream or file path was provided to open");
+                }
+
+                memoryStream.Position = 0;
+                zf = new ZipArchive(memoryStream, ZipArchiveMode.Read);
+
                 ReadZip(zf);
             }).ConfigureAwait(false);
         }

@@ -1,6 +1,6 @@
 ﻿/*
  * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
- * Copyright Raphael Stoeckli © 2024
+ * Copyright Raphael Stoeckli © 2025
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
@@ -206,7 +206,7 @@ namespace NanoXLSX
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address of the cell</param>
         /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
-        public Cell(Object value, CellType type, string address)
+        public Cell(object value, CellType type, string address)
         {
             if (type == CellType.EMPTY)
             {
@@ -231,7 +231,7 @@ namespace NanoXLSX
         /// <param name="type">Type of the cell</param>
         /// <param name="address">Address struct of the cell</param>
         /// <remarks>If the <see cref="DataType"/> is defined as <see cref="CellType.EMPTY"/> any passed value will be set to null</remarks>
-        public Cell(Object value, CellType type, Address address)
+        public Cell(object value, CellType type, Address address)
         {
             if (type == CellType.EMPTY)
             {
@@ -450,7 +450,7 @@ namespace NanoXLSX
             Type t;
             foreach (T item in list)
             {
-                if (item == null)
+                if (item == null) // DO NOT LISTEN to code suggestions! This is wrong for bool: if (object.Equals(item, default(T)))
                 {
                     c = new Cell(null, CellType.EMPTY);
                     output.Add(c);
@@ -756,29 +756,14 @@ namespace NanoXLSX
         {
             ValidateColumnNumber(columnNumber);
             // A - XFD
-            int j = 0;
-            int k = 0;
-            int l = 0;
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i <= columnNumber; i++)
+            columnNumber++;
+            while (columnNumber > 0)
             {
-                if (j > 25)
-                {
-                    k++;
-                    j = 0;
-                }
-                if (k > 25)
-                {
-                    l++;
-                    k = 0;
-                }
-                j++;
+                columnNumber--;
+                sb.Insert(0, (char)('A' + (columnNumber % 26)));
+                columnNumber /= 26;
             }
-            if (l > 0)
-            { sb.Append((char)(l + ASCII_OFFSET)); }
-            if (k > 0)
-            { sb.Append((char)(k + ASCII_OFFSET)); }
-            sb.Append((char)(j + ASCII_OFFSET));
             return sb.ToString();
         }
 
